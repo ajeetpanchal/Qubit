@@ -1,0 +1,11 @@
+.postapp{
+    width: 50%;
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+}
+@media screen and (max-width: 1000px) {
+  .home__container {
+    flex-direction: column-reverse;
+  }
+}
