@@ -8,8 +8,8 @@ export default function Userlogin() {
                     <div className="card card-3">
                         <div className="card-heading"></div>
                         <div className="card-body">
-                            <h2 className="title">Student Login</h2>
-                            <form method="POST">
+                            <h2 className="title">Student <br />Login</h2>
+                            <form method="POST" onSubmit={"/home"}>
                                 <div className="input-group">
                                     <input
                                         className="input--style-3"
