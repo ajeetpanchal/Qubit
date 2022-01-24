@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./login.css";
+import { useNavigate } from "react-router-dom";
 export default function Userlogin() {
+  let navigate = useNavigate();
   //change made here to add state hook and connect with backend
   const navigate = useNavigate();
   const [College_name, setCollege_name] = useState("");
@@ -21,16 +23,16 @@ export default function Userlogin() {
         password,
       }),
     });
-    const data = res.json();
+    const data = await res.json();
     if (res.status === 400 || !data) {
       window.alert("Please enter valid data");
       setCollege_name("");
       setCollege_id("");
       setpassword("");
     } else {
+      localStorage.setItem("userInfo", JSON.stringify(data));
       window.alert("login sucessfully");
       navigate("/home");
-
     }
     // console.log(res.json());
   };
@@ -55,7 +57,6 @@ export default function Userlogin() {
                       setCollege_name(e.target.value);
                     }}
                   />
-
                 </div>
                 <div className="input-group">
                   <input

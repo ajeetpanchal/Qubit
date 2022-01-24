@@ -3,6 +3,7 @@ import Forgotpassword from "./Forgotpassword";
 import Userlogin from "./Userlogin";
 import Home from './Home';
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import Home from "./Home";
 
 export default function Login() {
   return (
