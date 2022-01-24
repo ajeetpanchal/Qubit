@@ -13,7 +13,7 @@ const Post = () => {
                 <h4> {usename}</h4>
             </div>
             <div className="post__body">
-                <img src={PostPic} alt="Post h"  />
+                <img src={PostPic} alt="Post h" />
             </div>
             <div className="post__footer">
                 <p className="post__caption">

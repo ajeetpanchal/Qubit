@@ -1,9 +1,11 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./login.css";
 import { useNavigate } from "react-router-dom";
 export default function Userlogin() {
   let navigate = useNavigate();
   //change made here to add state hook and connect with backend
+  const navigate = useNavigate();
   const [College_name, setCollege_name] = useState("");
   const [College_id, setCollege_id] = useState("");
   const [password, setpassword] = useState("");

@@ -539,6 +539,11 @@ input {
   display: table-cell;
   width: 50%;
 }
+
+.card-bg{
+  background: url("../../../public/assets/images/bg-heading-04.jpg")
+}
+
 .forgot-password {
   margin-top: 20px;
 }
