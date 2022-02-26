@@ -1,6 +1,10 @@
 const express = require("express");
 const dotenv = require("dotenv");
 const connctDB = require("./config/db");
+const postRoute = require("./routes/posts");
+
+
+
 // const login = require("./models/userschema");
 const app = express();
 dotenv.config({
@@ -11,7 +15,7 @@ connctDB();
 app.use(express.json());
 //link the router file to connect with frontend easily.
 app.use(require("./routes/userroutes"));
-
+app.use("/post",postRoute);
 app.get("/", (req, res) => {
   res.send("api is running...");
 });

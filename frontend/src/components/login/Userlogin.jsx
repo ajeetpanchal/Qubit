@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./login.css";
-import { useNavigate } from "react-router-dom";
 export default function Userlogin() {
-  let navigate = useNavigate();
+
   //change made here to add state hook and connect with backend
   const navigate = useNavigate();
   const [College_name, setCollege_name] = useState("");
@@ -34,7 +33,7 @@ export default function Userlogin() {
       window.alert("login sucessfully");
       navigate("/home");
     }
-    // console.log(res.json());
+    console.log(res.json());
   };
   return (
     <div>
