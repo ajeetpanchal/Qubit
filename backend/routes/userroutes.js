@@ -1,5 +1,5 @@
 //for all routes of our website
-
+const asyncHandler = require("express-async-handler");
 const express = require("express");
 const router = express.Router();
 const connctDB = require("../config/db");
@@ -88,17 +88,18 @@ router.post("/forgot", async (req, res) => {
 router.get("/message", protect, async (req, res) => {
   const keyword = req.query.search
     ? {
-      $or: [
-        { name: { $regex: req.query.search, $options: "i" } },
-        { email: { $regex: req.query.search, $options: "i" } },
-      ],
-    }
+        $or: [
+          { name: { $regex: req.query.search, $options: "i" } },
+          { email: { $regex: req.query.search, $options: "i" } },
+        ],
+      }
     : {};
 
-  const userid = await Logins.find(keyword).find({
+  const users = await Logins.find(keyword).find({
     _id: { $ne: req.message._id },
   });
-  console.log(userid);
+  res.send(users);
+  console.log(users);
 });
 
 //create one to one chat and check the user who is craeting the chat is valid authorize user or not
@@ -124,6 +125,7 @@ router.post("/chat", protect, async (req, res) => {
   isChat = await Logins.populate(isChat, {
     path: "latestMessage.sender",
     select: "name pic email",
+    model: Messages,
   });
 
   if (isChat.length > 0) {
@@ -151,9 +153,11 @@ router.post("/chat", protect, async (req, res) => {
 //fetch all the chats
 router.get("/chat", protect, async (req, res) => {
   try {
-    Chat.find({ users: { $elemMatch: { $eq: req.message._id } } })
+    Chat.find({
+      users: { $elemMatch: { $eq: req.message._id } },
+    })
       .populate("users", "-password", Logins)
-      .populate("latestMessage", Messages)
+      .populate("latestMessage", " sender content", Messages)
       .sort({
         updateAt: -1,
       })
@@ -161,6 +165,7 @@ router.get("/chat", protect, async (req, res) => {
         results = await Logins.populate(results, {
           path: "latestMessage.sender",
           select: "name pic email",
+          model: Logins,
         });
         res.status(200).send(results);
       });
@@ -169,6 +174,66 @@ router.get("/chat", protect, async (req, res) => {
     console.error(e);
   }
 });
+
+router.post(
+  "/sendmessage",
+  protect,
+  asyncHandler(async (req, res) => {
+    // const mess = await Messages.deleteMany({});
+    const { content, chatId } = req.body;
+    if (!content || !chatId) {
+      console.log("Invalid data passed into request");
+      return res.status(400);
+    }
+    var newmessage = {
+      sender: req.message._id,
+      content: content,
+      chat: chatId,
+    };
+    try {
+      var message = await Messages.create(newmessage);
+
+      message = await Messages.findOne(message._id)
+        .populate("sender", "name pic email", Logins)
+        .populate("chat", " chatName users latestMessage", Chat);
+      message = await Logins.populate(message, {
+        path: "chat.users",
+        select: "name pic email",
+        model: Logins,
+      });
+
+      await Chat.findByIdAndUpdate(req.body.chatId, { latestMessage: message });
+
+      res.send(message);
+      // console.log(message);
+    } catch (error) {
+      res.status(400);
+      throw new Error(error.message);
+    }
+  })
+);
+
+router.get(
+  "/:chatId",
+  protect,
+  asyncHandler(async (req, res) => {
+    try {
+      var message = await Messages.find({ chat: req.params.chatId })
+        .populate("sender", "name pic email ", Logins)
+        .populate("chat", " chatName users latestMessage", Chat);
+      message = await Logins.populate(message, {
+        path: "chat.users",
+        select: "name pic email",
+        model: Logins,
+      });
+      res.send(message);
+    } catch (error) {
+      res.status(400);
+      console.log(error);
+    }
+  })
+);
+
 
 // lh:500/user?college_id = 19
 //get a user 
