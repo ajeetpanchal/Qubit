@@ -47,7 +47,7 @@ const SlideDrawer = () => {
   const [loadingChat, setloadingChat] = useState(false);
   const toast = useToast();
   const handlesearch = async () => {
-    // console.log(user.user.token);
+     console.log(user.user.token);
     if (!search) {
       toast({
         title: "Please Enter something in search",
@@ -68,7 +68,7 @@ const SlideDrawer = () => {
           },
         };
 
-        const { data } = await axios.get(`/api/user?search=${search}`, config);
+        const { data } = await axios.get(`/message?search=${search}`, config);
 
         setloading(false);
         JSON.stringify(data);
@@ -92,7 +92,7 @@ const SlideDrawer = () => {
   };
 
   const accessChat = async (userId) => {
-    // console.log("from access chat  " + userId);
+    console.log("from access chat" + userId);
     try {
       setloadingChat(true);
       const config = {
@@ -101,9 +101,9 @@ const SlideDrawer = () => {
           Authorization: `Bearer ${user.token}`,
         },
       };
-      const { data } = await axios.post(`/api/chat`, { userId }, config);
+      const { data } = await axios.post("/chat", { userId }, config);
       if (!chats.find((c) => c._id === data._id)) setChats([data, ...chats]);
-      // console.log(data);
+      console.log(data);
       setSelectedChat(data);
       setloadingChat(false);
       onClose();

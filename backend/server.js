@@ -1,8 +1,14 @@
+const userRoute = require("./routes/userroutes");
 const express = require("express");
 const dotenv = require("dotenv");
 const connctDB = require("./config/db");
 const cors = require("cors");
 const postRoute = require("./routes/posts");
+const tmpuser = require("./routes/tmpuser");
+const userroutes = require("./routes/userroutes");
+const chatroutes = require("./routes/chatroutes");
+const messageroutes = require("./routes/messageroutes");
+const questionroutes = require("./routes/questionroutes");
 // const login = require("./models/userschema");
 const app = express();
 dotenv.config({
@@ -18,8 +24,18 @@ app.use(express.json());
 //   })
 // );
 //link the router file to connect with frontend easily.
-app.use(require("./routes/userroutes"));
+//app.use(require("./routes/userroutes"));
 app.use("/post",postRoute);
+
+app.use("/api/user", userroutes);
+app.use("/api/chat", chatroutes);
+app.use("/api/message", messageroutes);
+app.use("/api/question", questionroutes);
+
+
+//app.use("/",userRoute);
+app.use("/tmp",tmpuser);
+
 const port = process.env.PORT || 5000;
 const server = app.listen(port, console.log(`server starting...${port}`));
 const io = require("socket.io")(server, {

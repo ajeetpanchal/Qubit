@@ -2,10 +2,15 @@ import React from 'react'
 import "./Rightbar.css";
 import { Users } from '../../dummyData';
 import Online from '../Online/Online';
-export default function Rightbar({ profile }) {
+export default function Rightbar({ user }) {
   const collage = require('../../Image/collage.png');
   const ad = require('../../Image//ad.jpg');
   const HomeRightBar = () => {
+
+
+
+
+
     return (
       <div>
         <div className='birthdayContainer'>
@@ -29,12 +34,11 @@ export default function Rightbar({ profile }) {
   const ProfileRightbar = () => {
     return (
       <div>
-
         <h4 className='rightbarTitle'>User Information </h4>
         <div className='rightbarInfo'>
           <div className='rightbarInfoItem'>
-            <span className='rightbarInfokey'>City:</span>
-            <span className='rightbarInfoValue'>Lunavada</span>
+            <span className='rightbarInfokey'>College:</span>
+            <span className='rightbarInfoValue'>{user.College_name}</span>
           </div>
 
           <div className='rightbarInfoItem'>
@@ -47,8 +51,23 @@ export default function Rightbar({ profile }) {
             <span className='rightbarInfokey'>Sem:</span>
             <span className='rightbarInfoValue'>6</span>
           </div>
-
         </div>
+
+
+        
+        <h4 className="rightbarTitle">User friends</h4>
+        <div className="rightbarFollowings">
+            <div className="rightbarFollowing">
+              <img
+                src=""
+                alt=""
+                className="rightbarFollowingImg"
+              />
+              <span className="rightbarFollowingName">username</span>
+            </div>
+          
+       
+      </div>
 
       </div>
     );
@@ -58,7 +77,7 @@ export default function Rightbar({ profile }) {
   return (
     <div className='rightbar'>
       <div className='rightbarWrapper'>
-      {profile ? <ProfileRightbar/> : <HomeRightBar/>}
+      {user ? <ProfileRightbar/> : <HomeRightBar/>}
         
       </div>
     </div>
