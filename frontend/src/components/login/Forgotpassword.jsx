@@ -15,7 +15,7 @@ export default function Forgotpassword() {
       setCollege_id("");
       setconfirm_password("");
     } else {
-      const res = await fetch("/forgot", {
+      const res = await fetch("/api/user/forgot", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

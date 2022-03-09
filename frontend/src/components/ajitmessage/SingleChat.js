@@ -43,6 +43,7 @@ export const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   useEffect(() => {
     socket = io(ENDPOINT);
     socket.emit("setup", user);
+
     socket.on("connected", () => setsocketconnected(true));
     console.log("connection made");
     socket.on("typing", () => setistyping(true));
@@ -86,11 +87,7 @@ export const SingleChat = ({ fetchAgain, setFetchAgain }) => {
         },
       };
 
-      const { data } = await axios.get(
-        `/api/message/${selectedChat._id}`,
-        config
-      );
-      // console.log(data);
+      const { data } = await axios.get(`/${selectedChat._id}`, config);
       setallmessage(data);
       setloading(false);
       socket.emit("join chat", selectedChat._id);
@@ -118,7 +115,7 @@ export const SingleChat = ({ fetchAgain, setFetchAgain }) => {
         };
         setnewmessage("");
         const { data } = await axios.post(
-          "/api/message/",
+          "/sendmessage",
           {
             content: newmessage,
             chatId: selectedChat._id,
@@ -127,7 +124,7 @@ export const SingleChat = ({ fetchAgain, setFetchAgain }) => {
         );
         socket.emit("new message", data);
         setallmessage([...allmessage, data]);
-        // console.log(allmessage);
+        console.log(allmessage);
       } catch (error) {
         toast({
           title: " couldn't send message",
@@ -151,7 +148,7 @@ export const SingleChat = ({ fetchAgain, setFetchAgain }) => {
       socket.emit("typing", selectedChat._id);
       settyping(true);
     }
-    // console.log(selectedChat);
+    console.log(selectedChat);
     //function that decide when user stop typing
     let lasttypingtime = new Date().getTime();
     var timerLength = 3000;

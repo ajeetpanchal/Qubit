@@ -19,8 +19,7 @@ const MyChats = ({ fetchAgain }) => {
         },
       };
 
-      const { data } = await axios.get("/api/chat/", config);
-      // console.log(data);
+      const { data } = await axios.get("/chat", config);
       setChats(data);
     } catch (error) {
       toast({
@@ -86,14 +85,14 @@ const MyChats = ({ fetchAgain }) => {
                 key={chat._id}
               >
                 <Text>{getSender(loggeduser, chat.users)}</Text>
-                {chat.latestMessage && (
+                {/* {chat.latestMessage && (
                   <Text fontSize="xs">
                     <b>{chat.latestMessage.sender.name} : </b>
                     {chat.latestMessage.content.length > 50
                       ? chat.latestMessage.content.substring(0, 51) + "..."
-                      : chat.latestMessage.content}
-                  </Text>
-                )}
+                      : chat.latestMessage.content} */}
+                {/* </Text> */}
+                {/* )} */}
               </Box>
             ))}
           </Stack>

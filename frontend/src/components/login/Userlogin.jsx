@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./login.css";
 export default function Userlogin() {
-
   //change made here to add state hook and connect with backend
   const navigate = useNavigate();
   const [College_name, setCollege_name] = useState("");
@@ -11,7 +10,7 @@ export default function Userlogin() {
   const loginuser = async (e) => {
     e.preventDefault();
     // window.alert("login..");
-    const res = await fetch("/login", {
+    const res = await fetch("/api/user/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

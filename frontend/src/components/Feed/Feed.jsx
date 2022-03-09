@@ -5,31 +5,35 @@ import Share from '../Share/Share'
 import { Posts } from '../../dummyData'
 import axios from "axios";
 const Feed = (props) => {
-   
-  const {College_id} = props;
  
+  const {College_id} = props;
   const [posts, setPosts] = useState([]);
-
+ let CurrentUser = localStorage.getItem("userInfo");
+ let user_object = JSON.parse(CurrentUser);
+   //console.log(user_object._id);
 
   useEffect(() => {
-    
     const fetchPosts = async () => {
-  
       const res = (College_id
-        ? await axios.get("/post/profile/"+College_id) 
-        : await axios.get("/post/timeline/61e7f9f472fc88e10483f085"));
-
-      setPosts(res.data)
+        ? await axios.get("/post/profile/"+ College_id ) 
+        : await axios.get("/post/timeline/"+ user_object._id));
+      setPosts(
+        res.data.sort((p1,p2)=>{
+          return new Date(p2.createdAt) - new Date(p1.createdAt);
+        }) 
+        );
     };
     fetchPosts();
-  }, []);
+  }, [College_id,user_object._id]);
   return (
      <div className='feed'>
       <div className='feedWrapper'>
+      
         <Share />
         {posts.map((p) => (
-          <Post key={p._id} post={p} />
+          <Post key={p._id} post={p} />          
         ))}
+        
       </div>
 
     </div>
@@ -38,8 +42,8 @@ const Feed = (props) => {
 export default Feed;
 
 
-
-// code is for /post 
+{/* 
+// code is for post 
 
 //   useEffect(() => {
 //     let url = "/post/";
@@ -58,3 +62,4 @@ export default Feed;
 
 //     fetchPosts();
 // }, []);
+*/}
